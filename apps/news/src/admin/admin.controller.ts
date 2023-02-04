@@ -8,7 +8,7 @@ import {
 } from '@test-task-5/grpc/generated/admin/admin';
 import { RolesAuthGuard } from './guards/roles.guard';
 import AdminService from './admin.service';
-import { GrpcMethod } from '@nestjs/microservices';
+import { GrpcMethod, RpcException } from '@nestjs/microservices';
 @Controller()
 export class AdminController {
   constructor(private adminService: AdminService) {}
@@ -20,6 +20,12 @@ export class AdminController {
     data: CreateNewsRequest,
     metadata: any,
   ): Promise<CreateNewsResponse> {
+    if (!data.text) {
+      throw new RpcException({
+        code: 3,
+        message: 'Please, specify text',
+      });
+    }
     const id = metadata.get('id')[0];
     const news = await this.adminService.createNews(data.text, id);
 
@@ -30,6 +36,13 @@ export class AdminController {
   @UseGuards(RolesAuthGuard)
   @GrpcMethod('AdminService', 'GetUsers')
   async getUsersRequest(data: GetUsersRequest): Promise<GetUsersResponse> {
+    if (!data.count || !data.offset) {
+      throw new RpcException({
+        code: 3,
+        message: 'Please, specify text',
+      });
+    }
+
     const users = await this.adminService.getUsers(data.count, data.offset);
     return {
       users: users,

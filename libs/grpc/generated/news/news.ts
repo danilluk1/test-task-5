@@ -9,7 +9,7 @@ export interface News {
   text: string;
   authorId: number;
   likes: number;
-  view: number;
+  views: number;
 }
 
 export interface LikeNewsRequest {
@@ -40,7 +40,7 @@ export interface UpdateNewsRequest {
   text: string;
   authorId: number;
   likes: number;
-  view: number;
+  views: number;
 }
 
 export interface UpdateNewsResponse {
@@ -56,7 +56,7 @@ export interface DeleteNewsResponse {
 }
 
 function createBaseNews(): News {
-  return { id: 0, text: "", authorId: 0, likes: 0, view: 0 };
+  return { id: 0, text: "", authorId: 0, likes: 0, views: 0 };
 }
 
 export const News = {
@@ -73,8 +73,8 @@ export const News = {
     if (message.likes !== 0) {
       writer.uint32(32).uint32(message.likes);
     }
-    if (message.view !== 0) {
-      writer.uint32(40).uint32(message.view);
+    if (message.views !== 0) {
+      writer.uint32(40).uint32(message.views);
     }
     return writer;
   },
@@ -99,7 +99,7 @@ export const News = {
           message.likes = reader.uint32();
           break;
         case 5:
-          message.view = reader.uint32();
+          message.views = reader.uint32();
           break;
         default:
           reader.skipType(tag & 7);
@@ -115,7 +115,7 @@ export const News = {
       text: isSet(object.text) ? String(object.text) : "",
       authorId: isSet(object.authorId) ? Number(object.authorId) : 0,
       likes: isSet(object.likes) ? Number(object.likes) : 0,
-      view: isSet(object.view) ? Number(object.view) : 0,
+      views: isSet(object.views) ? Number(object.views) : 0,
     };
   },
 
@@ -125,7 +125,7 @@ export const News = {
     message.text !== undefined && (obj.text = message.text);
     message.authorId !== undefined && (obj.authorId = Math.round(message.authorId));
     message.likes !== undefined && (obj.likes = Math.round(message.likes));
-    message.view !== undefined && (obj.view = Math.round(message.view));
+    message.views !== undefined && (obj.views = Math.round(message.views));
     return obj;
   },
 
@@ -139,7 +139,7 @@ export const News = {
     message.text = object.text ?? "";
     message.authorId = object.authorId ?? 0;
     message.likes = object.likes ?? 0;
-    message.view = object.view ?? 0;
+    message.views = object.views ?? 0;
     return message;
   },
 };
@@ -443,7 +443,7 @@ export const GetNewsResponse = {
 };
 
 function createBaseUpdateNewsRequest(): UpdateNewsRequest {
-  return { id: 0, text: "", authorId: 0, likes: 0, view: 0 };
+  return { id: 0, text: "", authorId: 0, likes: 0, views: 0 };
 }
 
 export const UpdateNewsRequest = {
@@ -460,8 +460,8 @@ export const UpdateNewsRequest = {
     if (message.likes !== 0) {
       writer.uint32(32).uint32(message.likes);
     }
-    if (message.view !== 0) {
-      writer.uint32(40).uint32(message.view);
+    if (message.views !== 0) {
+      writer.uint32(40).uint32(message.views);
     }
     return writer;
   },
@@ -486,7 +486,7 @@ export const UpdateNewsRequest = {
           message.likes = reader.uint32();
           break;
         case 5:
-          message.view = reader.uint32();
+          message.views = reader.uint32();
           break;
         default:
           reader.skipType(tag & 7);
@@ -502,7 +502,7 @@ export const UpdateNewsRequest = {
       text: isSet(object.text) ? String(object.text) : "",
       authorId: isSet(object.authorId) ? Number(object.authorId) : 0,
       likes: isSet(object.likes) ? Number(object.likes) : 0,
-      view: isSet(object.view) ? Number(object.view) : 0,
+      views: isSet(object.views) ? Number(object.views) : 0,
     };
   },
 
@@ -512,7 +512,7 @@ export const UpdateNewsRequest = {
     message.text !== undefined && (obj.text = message.text);
     message.authorId !== undefined && (obj.authorId = Math.round(message.authorId));
     message.likes !== undefined && (obj.likes = Math.round(message.likes));
-    message.view !== undefined && (obj.view = Math.round(message.view));
+    message.views !== undefined && (obj.views = Math.round(message.views));
     return obj;
   },
 
@@ -526,7 +526,7 @@ export const UpdateNewsRequest = {
     message.text = object.text ?? "";
     message.authorId = object.authorId ?? 0;
     message.likes = object.likes ?? 0;
-    message.view = object.view ?? 0;
+    message.views = object.views ?? 0;
     return message;
   },
 };

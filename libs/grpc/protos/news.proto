@@ -15,7 +15,7 @@ message News {
   string text = 2;
   uint32 author_id = 3;
   uint32 likes = 4;
-  uint32 view = 5;
+  uint32 views = 5;
 }
 
 message LikeNewsRequest {
@@ -47,7 +47,7 @@ message UpdateNewsRequest {
   string text = 2;
   uint32 author_id = 3;
   uint32 likes = 4;
-  uint32 view = 5;
+  uint32 views = 5;
 }
 
 message UpdateNewsResponse {

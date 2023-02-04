@@ -18,6 +18,16 @@ export class NewsService {
   }
 
   public async deleteNews(id: number) {
+    const news = await this.dataSource.getRepository(News).findOneBy({
+      id: id,
+    });
+
+    if (!news) {
+      throw new RpcException({
+        status: 5,
+        message: "Can't find news with this id",
+      });
+    }
     await this.dataSource.getRepository(News).delete({
       id: id,
     });
@@ -39,6 +49,7 @@ export class NewsService {
 
     news.text = text;
     await this.dataSource.getRepository(News).save(news);
+    return news;
   }
 
   public async getNews(id: number) {

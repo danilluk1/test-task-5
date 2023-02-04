@@ -20,8 +20,9 @@ export class GrpcAuthGuard implements CanActivate {
     const type = context.getType();
     const prefix = 'Bearer ';
     let header;
+    let metadata;
     if (type === 'rpc') {
-      const metadata = context.getArgByIndex(1);
+      metadata = context.getArgByIndex(1);
       if (!metadata) {
         return false;
       }
@@ -42,6 +43,7 @@ export class GrpcAuthGuard implements CanActivate {
         return false;
       }
 
+      metadata.set('id', valid.id);
       return true;
     } catch (e) {
       return false;
