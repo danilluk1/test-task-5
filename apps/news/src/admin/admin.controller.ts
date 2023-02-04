@@ -20,7 +20,7 @@ export class AdminController {
     data: CreateNewsRequest,
     metadata: any,
   ): Promise<CreateNewsResponse> {
-    const id = metadata.id;
+    const id = metadata.get('id')[0];
     const news = await this.adminService.createNews(data.text, id);
 
     return news;

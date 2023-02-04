@@ -1,20 +1,19 @@
+import { AuthController } from './../../../auth/src/auth.controller';
 import { SimpleUser } from './../../../../libs/grpc/generated/auth/auth';
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { InjectDataSource } from '@nestjs/typeorm';
 import News from 'src/db/entities/news.entity';
 import { DataSource } from 'typeorm';
-import { AuthService } from '../../../auth/src/auth.service';
+import { firstValueFrom, Observable } from 'rxjs';
 @Injectable()
-export default class AdminService implements OnModuleInit {
-  private authService: AuthService;
+export default class AdminService {
+  private authService: AuthController;
   constructor(
     @Inject('AUTH_PACKAGE') private client: ClientGrpc,
     @InjectDataSource() private dataSource: DataSource,
-  ) {}
-
-  onModuleInit() {
-    this.authService = this.client.getService<AuthService>('AuthService');
+  ) {
+    this.authService = this.client.getService<AuthController>('AuthService');
   }
 
   public async createNews(text: string, adminId: number) {
@@ -27,7 +26,13 @@ export default class AdminService implements OnModuleInit {
   }
 
   public async getUsers(limit: number, offset: number): Promise<SimpleUser[]> {
-    const users = await this.authService.getUsers(limit, offset);
-    return users;
+    const users = await firstValueFrom(
+      (await this.authService.getUsers({
+        count: limit,
+        offset: offset,
+      })) as unknown as Observable<any>,
+    );
+
+    return users.users;
   }
 }

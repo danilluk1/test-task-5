@@ -130,7 +130,6 @@ export class AuthService {
   public async validate(
     accessToken: string,
   ): Promise<{ login: string; id: number }> {
-    console.log(accessToken);
     if (!accessToken) {
       throw new RpcException({
         code: 7,

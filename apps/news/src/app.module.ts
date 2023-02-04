@@ -22,7 +22,7 @@ import { NewsModule } from './news/news.module';
         synchronize: true,
       }),
     }),
-    // NewsModule,
+    NewsModule,
     AdminModule,
   ],
   controllers: [],

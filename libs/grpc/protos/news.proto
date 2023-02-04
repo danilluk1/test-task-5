@@ -5,6 +5,7 @@ package news;
 service NewsService {
   rpc CreateNews(CreateNewsRequest) returns (CreateNewsResponse) {}
   rpc GetNews(GetNewsRequest) returns (GetNewsResponse) {}
+  rpc LikeNews(LikeNewsRequest) returns (LikeNewsResponse) {}
   rpc UpdateNews(UpdateNewsRequest) returns (UpdateNewsResponse) {}
   rpc DeleteNews(DeleteNewsRequest) returns (DeleteNewsResponse) {}
 }
@@ -15,6 +16,14 @@ message News {
   uint32 author_id = 3;
   uint32 likes = 4;
   uint32 view = 5;
+}
+
+message LikeNewsRequest {
+  uint32 id = 1;
+}
+
+message LikeNewsResponse {
+
 }
 
 message CreateNewsRequest {

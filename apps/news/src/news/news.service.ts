@@ -25,7 +25,21 @@ export class NewsService {
     return id;
   }
 
-  // public async updateNews(id);
+  public async updateNews(id: number, text: string) {
+    const news = await this.dataSource.getRepository(News).findOneBy({
+      id: id,
+    });
+
+    if (!news) {
+      throw new RpcException({
+        status: 5,
+        message: "Can't find news with this id",
+      });
+    }
+
+    news.text = text;
+    await this.dataSource.getRepository(News).save(news);
+  }
 
   public async getNews(id: number) {
     const news = await this.dataSource.getRepository(News).findOneBy({

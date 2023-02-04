@@ -12,6 +12,13 @@ export interface News {
   view: number;
 }
 
+export interface LikeNewsRequest {
+  id: number;
+}
+
+export interface LikeNewsResponse {
+}
+
 export interface CreateNewsRequest {
   text: string;
 }
@@ -133,6 +140,100 @@ export const News = {
     message.authorId = object.authorId ?? 0;
     message.likes = object.likes ?? 0;
     message.view = object.view ?? 0;
+    return message;
+  },
+};
+
+function createBaseLikeNewsRequest(): LikeNewsRequest {
+  return { id: 0 };
+}
+
+export const LikeNewsRequest = {
+  encode(message: LikeNewsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint32(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LikeNewsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLikeNewsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LikeNewsRequest {
+    return { id: isSet(object.id) ? Number(object.id) : 0 };
+  },
+
+  toJSON(message: LikeNewsRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    return obj;
+  },
+
+  create(base?: DeepPartial<LikeNewsRequest>): LikeNewsRequest {
+    return LikeNewsRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial(object: DeepPartial<LikeNewsRequest>): LikeNewsRequest {
+    const message = createBaseLikeNewsRequest();
+    message.id = object.id ?? 0;
+    return message;
+  },
+};
+
+function createBaseLikeNewsResponse(): LikeNewsResponse {
+  return {};
+}
+
+export const LikeNewsResponse = {
+  encode(_: LikeNewsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LikeNewsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLikeNewsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): LikeNewsResponse {
+    return {};
+  },
+
+  toJSON(_: LikeNewsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create(base?: DeepPartial<LikeNewsResponse>): LikeNewsResponse {
+    return LikeNewsResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial(_: DeepPartial<LikeNewsResponse>): LikeNewsResponse {
+    const message = createBaseLikeNewsResponse();
     return message;
   },
 };
@@ -604,6 +705,14 @@ export const NewsServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    likeNews: {
+      name: "LikeNews",
+      requestType: LikeNewsRequest,
+      requestStream: false,
+      responseType: LikeNewsResponse,
+      responseStream: false,
+      options: {},
+    },
     updateNews: {
       name: "UpdateNews",
       requestType: UpdateNewsRequest,
@@ -629,6 +738,7 @@ export interface NewsServiceImplementation<CallContextExt = {}> {
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<CreateNewsResponse>>;
   getNews(request: GetNewsRequest, context: CallContext & CallContextExt): Promise<DeepPartial<GetNewsResponse>>;
+  likeNews(request: LikeNewsRequest, context: CallContext & CallContextExt): Promise<DeepPartial<LikeNewsResponse>>;
   updateNews(
     request: UpdateNewsRequest,
     context: CallContext & CallContextExt,
@@ -645,6 +755,7 @@ export interface NewsServiceClient<CallOptionsExt = {}> {
     options?: CallOptions & CallOptionsExt,
   ): Promise<CreateNewsResponse>;
   getNews(request: DeepPartial<GetNewsRequest>, options?: CallOptions & CallOptionsExt): Promise<GetNewsResponse>;
+  likeNews(request: DeepPartial<LikeNewsRequest>, options?: CallOptions & CallOptionsExt): Promise<LikeNewsResponse>;
   updateNews(
     request: DeepPartial<UpdateNewsRequest>,
     options?: CallOptions & CallOptionsExt,
