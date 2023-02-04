@@ -12,6 +12,13 @@ export interface User {
   role: string;
 }
 
+export interface LogoutRequest {
+  refreshToken: string;
+}
+
+export interface LogoutResponse {
+}
+
 export interface RegisterRequest {
   login: string;
   password: string;
@@ -124,6 +131,100 @@ export const User = {
     message.accessToken = object.accessToken ?? "";
     message.refreshToken = object.refreshToken ?? "";
     message.role = object.role ?? "";
+    return message;
+  },
+};
+
+function createBaseLogoutRequest(): LogoutRequest {
+  return { refreshToken: "" };
+}
+
+export const LogoutRequest = {
+  encode(message: LogoutRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.refreshToken !== "") {
+      writer.uint32(10).string(message.refreshToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LogoutRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLogoutRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.refreshToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LogoutRequest {
+    return { refreshToken: isSet(object.refreshToken) ? String(object.refreshToken) : "" };
+  },
+
+  toJSON(message: LogoutRequest): unknown {
+    const obj: any = {};
+    message.refreshToken !== undefined && (obj.refreshToken = message.refreshToken);
+    return obj;
+  },
+
+  create(base?: DeepPartial<LogoutRequest>): LogoutRequest {
+    return LogoutRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial(object: DeepPartial<LogoutRequest>): LogoutRequest {
+    const message = createBaseLogoutRequest();
+    message.refreshToken = object.refreshToken ?? "";
+    return message;
+  },
+};
+
+function createBaseLogoutResponse(): LogoutResponse {
+  return {};
+}
+
+export const LogoutResponse = {
+  encode(_: LogoutResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LogoutResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLogoutResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): LogoutResponse {
+    return {};
+  },
+
+  toJSON(_: LogoutResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create(base?: DeepPartial<LogoutResponse>): LogoutResponse {
+    return LogoutResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial(_: DeepPartial<LogoutResponse>): LogoutResponse {
+    const message = createBaseLogoutResponse();
     return message;
   },
 };
@@ -496,6 +597,14 @@ export const AuthServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    logout: {
+      name: "Logout",
+      requestType: LogoutRequest,
+      requestStream: false,
+      responseType: LogoutResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -503,12 +612,14 @@ export interface AuthServiceImplementation<CallContextExt = {}> {
   register(request: RegisterRequest, context: CallContext & CallContextExt): Promise<DeepPartial<RegisterResponse>>;
   login(request: LoginRequest, context: CallContext & CallContextExt): Promise<DeepPartial<LoginResponse>>;
   refresh(request: RefreshRequest, context: CallContext & CallContextExt): Promise<DeepPartial<RefreshResponse>>;
+  logout(request: LogoutRequest, context: CallContext & CallContextExt): Promise<DeepPartial<LogoutResponse>>;
 }
 
 export interface AuthServiceClient<CallOptionsExt = {}> {
   register(request: DeepPartial<RegisterRequest>, options?: CallOptions & CallOptionsExt): Promise<RegisterResponse>;
   login(request: DeepPartial<LoginRequest>, options?: CallOptions & CallOptionsExt): Promise<LoginResponse>;
   refresh(request: DeepPartial<RefreshRequest>, options?: CallOptions & CallOptionsExt): Promise<RefreshResponse>;
+  logout(request: DeepPartial<LogoutRequest>, options?: CallOptions & CallOptionsExt): Promise<LogoutResponse>;
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

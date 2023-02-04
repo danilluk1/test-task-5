@@ -6,6 +6,7 @@ service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc Refresh(RefreshRequest) returns (RefreshResponse) {}
+  rpc Logout(LogoutRequest) returns (LogoutResponse) {}
 }
 
 message User {
@@ -14,6 +15,14 @@ message User {
   string accessToken = 3;
   string refreshToken = 4;
   string role = 5;
+}
+
+message LogoutRequest {
+  string refreshToken = 1;
+}
+
+message LogoutResponse {
+  
 }
 
 message RegisterRequest {

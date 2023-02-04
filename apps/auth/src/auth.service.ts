@@ -7,6 +7,7 @@ import User from './db/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserDto } from './models/dtos/user.dto';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -80,9 +81,9 @@ export class AuthService {
     };
   }
 
-  public async logout(id: number) {
+  public async logout(refreshToken: string) {
     const user = await this.dataSource.getRepository(User).findOneBy({
-      id: id,
+      refreshToken: refreshToken,
     });
 
     if (!user) {
@@ -96,6 +97,32 @@ export class AuthService {
       ...user,
       refreshToken: null,
     });
+  }
+
+  public async refreshTokens(refreshToken: string) {
+    const user = await this.dataSource.getRepository(User).findOneBy({
+      refreshToken: refreshToken,
+    });
+
+    if (!user) {
+      throw new RpcException({
+        code: 5,
+        message: 'User not found',
+      });
+    }
+
+    if (user.refreshToken !== refreshToken) {
+      throw new RpcException({
+        code: 7,
+        message: `Refresh token doesn't match with token on the server`,
+      });
+    }
+
+    const tokens = await this.getTokens(user.id, user.login);
+    user.refreshToken = tokens.refreshToken;
+    await this.dataSource.getRepository(User).save(user);
+
+    return tokens;
   }
 
   private async getTokens(id: number, login: string) {
