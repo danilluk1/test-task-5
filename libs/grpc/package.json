@@ -1,0 +1,26 @@
+{
+  "name": "@test-task-5/grpc",
+  "scripts": {
+    "build": "rm -rf dist && ts-node --transpileOnly index.ts && tsc"
+  },
+  "exports": {
+    "./*": "./dist/*.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*.d.ts"
+      ]
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "grpc-tools": "^1.12.4",
+    "protobufjs": "^7.2.1",
+    "ts-proto": "^1.139.0"
+  },
+  "devDependencies": {
+    "@grpc/grpc-js": "^1.8.7"
+  }
+}

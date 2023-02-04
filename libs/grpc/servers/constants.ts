@@ -1,0 +1,4 @@
+export enum PORTS {
+  AUTH_SERVER_PORT = 50051,
+  NEWS_SERVER_PORT,
+}
