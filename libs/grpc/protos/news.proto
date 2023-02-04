@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package news;
+
+service NewsService {
+  rpc CreateNews(CreateNewsRequest) returns (CreateNewsResponse) {}
+  rpc GetNews(GetNewsRequest) returns (GetNewsResponse) {}
+  rpc UpdateNews(UpdateNewsRequest) returns (UpdateNewsResponse) {}
+  rpc DeleteNews(DeleteNewsRequest) returns (DeleteNewsResponse) {}
+}
+
+message News {
+  uint32 id = 1;
+  string text = 2;
+  uint32 author_id = 3;
+  uint32 likes = 4;
+  uint32 view = 5;
+}
+
+message CreateNewsRequest {
+  string text = 1;
+}
+
+message CreateNewsResponse {
+  News news = 1;
+}
+
+message GetNewsRequest {
+  uint32 id = 1;
+}
+
+message GetNewsResponse {
+  News news = 1;
+}
+
+message UpdateNewsRequest {
+  uint32 id = 1;
+  string text = 2;
+  uint32 author_id = 3;
+  uint32 likes = 4;
+  uint32 view = 5;
+}
+
+message UpdateNewsResponse {
+  News news = 1;
+}
+
+message DeleteNewsRequest {
+  uint32 id = 1;
+}
+
+message DeleteNewsResponse {
+  uint32 id = 1;
+}

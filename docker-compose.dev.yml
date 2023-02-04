@@ -4,10 +4,10 @@ services:
   postgres:
     image: postgres:15-alpine
     volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
       - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: "test"
-      POSTGRES_DB: "test"
       POSTGRES_PASSWORD: "test"
     ports:
       - "5432:5432"

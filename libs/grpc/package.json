@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "grpc-tools": "^1.12.4",
+    "long": "^5.2.1",
     "nice-grpc-common": "^2.0.1",
     "protobufjs": "^7.2.1",
     "ts-proto": "^1.139.0"

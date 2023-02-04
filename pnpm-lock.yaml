@@ -105,6 +105,7 @@ importers:
       '@nestjs/common': ^9.0.0
       '@nestjs/config': ^2.3.0
       '@nestjs/core': ^9.0.0
+      '@nestjs/microservices': ^9.3.2
       '@nestjs/platform-express': ^9.0.0
       '@nestjs/schematics': ^9.0.0
       '@nestjs/testing': ^9.0.0
@@ -135,7 +136,8 @@ importers:
     dependencies:
       '@nestjs/common': 9.3.2_mnr6j2del53muneqly5h4y27ai
       '@nestjs/config': 2.3.0_faw27zmqjaamnhwhsycb5q3sc4
-      '@nestjs/core': 9.3.2_ycjbddrylidedcgziugeskgnam
+      '@nestjs/core': 9.3.2_pje24xt5w5655ydv24gaxlj3ku
+      '@nestjs/microservices': 9.3.2_zoh65q65572aobw6w23aqxzv5y
       '@nestjs/platform-express': 9.3.2_fnnujyxcjtinmcbby3pisnawpe
       '@nestjs/typeorm': 9.0.1_yap6zdz53x5x2cqk2hmcgqigau
       '@test-task-5/grpc': link:../../libs/grpc
@@ -146,7 +148,7 @@ importers:
     devDependencies:
       '@nestjs/cli': 9.2.0
       '@nestjs/schematics': 9.0.4_typescript@4.9.5
-      '@nestjs/testing': 9.3.2_7a34jc7ugkzz7otoyin34qriiu
+      '@nestjs/testing': 9.3.2_4e33vnsouacfyehkcvc2fifsli
       '@types/express': 4.17.17
       '@types/jest': 29.2.4
       '@types/node': 18.11.18
@@ -170,11 +172,13 @@ importers:
     specifiers:
       '@grpc/grpc-js': ^1.8.7
       grpc-tools: ^1.12.4
+      long: ^5.2.1
       nice-grpc-common: ^2.0.1
       protobufjs: ^7.2.1
       ts-proto: ^1.139.0
     dependencies:
       grpc-tools: 1.12.4
+      long: 5.2.1
       nice-grpc-common: 2.0.1
       protobufjs: 7.2.1
       ts-proto: 1.139.0
@@ -1087,39 +1091,7 @@ packages:
         optional: true
     dependencies:
       '@nestjs/common': 9.3.2_mnr6j2del53muneqly5h4y27ai
-      '@nestjs/microservices': 9.3.2_wftyn3p2nv2ilhbacwxd2z7xp4
-      '@nestjs/platform-express': 9.3.2_fnnujyxcjtinmcbby3pisnawpe
-      '@nuxtjs/opencollective': 0.3.2
-      fast-safe-stringify: 2.1.1
-      iterare: 1.2.1
-      object-hash: 3.0.0
-      path-to-regexp: 3.2.0
-      reflect-metadata: 0.1.13
-      rxjs: 7.8.0
-      tslib: 2.5.0
-      uuid: 9.0.0
-    transitivePeerDependencies:
-      - encoding
-
-  /@nestjs/core/9.3.2_ycjbddrylidedcgziugeskgnam:
-    resolution: {integrity: sha512-79h4RvGAGFIIZJWIXqZ8xvhK/kIY6Fay7a1P0W4v7AUZsMIuNksct0uMzHaBqMT0lo+Ei+gU8PaWvzZt5lZvJw==}
-    requiresBuild: true
-    peerDependencies:
-      '@nestjs/common': ^9.0.0
-      '@nestjs/microservices': ^9.0.0
-      '@nestjs/platform-express': ^9.0.0
-      '@nestjs/websockets': ^9.0.0
-      reflect-metadata: ^0.1.12
-      rxjs: ^7.1.0
-    peerDependenciesMeta:
-      '@nestjs/microservices':
-        optional: true
-      '@nestjs/platform-express':
-        optional: true
-      '@nestjs/websockets':
-        optional: true
-    dependencies:
-      '@nestjs/common': 9.3.2_mnr6j2del53muneqly5h4y27ai
+      '@nestjs/microservices': 9.3.2_zoh65q65572aobw6w23aqxzv5y
       '@nestjs/platform-express': 9.3.2_fnnujyxcjtinmcbby3pisnawpe
       '@nuxtjs/opencollective': 0.3.2
       fast-safe-stringify: 2.1.1
@@ -1186,6 +1158,50 @@ packages:
       reflect-metadata: 0.1.13
       rxjs: 7.8.0
       tslib: 2.5.0
+    dev: false
+
+  /@nestjs/microservices/9.3.2_zoh65q65572aobw6w23aqxzv5y:
+    resolution: {integrity: sha512-htpBU0XBJ+MSPbcSmV64413vILE0GrLH5cNtE6rwoYzX+MmZHPe1ZWPVIntVaxadx/3GwtBNbrC7Qd7UkxlnJw==}
+    peerDependencies:
+      '@grpc/grpc-js': '*'
+      '@nestjs/common': ^9.0.0
+      '@nestjs/core': ^9.0.0
+      '@nestjs/websockets': ^9.0.0
+      amqp-connection-manager: '*'
+      amqplib: '*'
+      cache-manager: '*'
+      ioredis: '*'
+      kafkajs: '*'
+      mqtt: '*'
+      nats: '*'
+      reflect-metadata: ^0.1.12
+      rxjs: ^7.1.0
+    peerDependenciesMeta:
+      '@grpc/grpc-js':
+        optional: true
+      '@nestjs/websockets':
+        optional: true
+      amqp-connection-manager:
+        optional: true
+      amqplib:
+        optional: true
+      cache-manager:
+        optional: true
+      ioredis:
+        optional: true
+      kafkajs:
+        optional: true
+      mqtt:
+        optional: true
+      nats:
+        optional: true
+    dependencies:
+      '@nestjs/common': 9.3.2_mnr6j2del53muneqly5h4y27ai
+      '@nestjs/core': 9.3.2_pje24xt5w5655ydv24gaxlj3ku
+      iterare: 1.2.1
+      reflect-metadata: 0.1.13
+      rxjs: 7.8.0
+      tslib: 2.5.0
 
   /@nestjs/passport/9.0.1_dpjyhlmcqdvxcebopcsorharce:
     resolution: {integrity: sha512-WhT0yhpMp1B8b1OdQdPv/rd2O8V0HUmoGsWFzJKPsALuaxozjem2WotUEy1GV/TT8kvfC4ok7tECjRAArO+I8Q==}
@@ -1204,7 +1220,7 @@ packages:
       '@nestjs/core': ^9.0.0
     dependencies:
       '@nestjs/common': 9.3.2_mnr6j2del53muneqly5h4y27ai
-      '@nestjs/core': 9.3.2_ycjbddrylidedcgziugeskgnam
+      '@nestjs/core': 9.3.2_pje24xt5w5655ydv24gaxlj3ku
       body-parser: 1.20.1
       cors: 2.8.5
       express: 4.18.2
@@ -1258,26 +1274,7 @@ packages:
     dependencies:
       '@nestjs/common': 9.3.2_mnr6j2del53muneqly5h4y27ai
       '@nestjs/core': 9.3.2_pje24xt5w5655ydv24gaxlj3ku
-      '@nestjs/microservices': 9.3.2_wftyn3p2nv2ilhbacwxd2z7xp4
-      '@nestjs/platform-express': 9.3.2_fnnujyxcjtinmcbby3pisnawpe
-      tslib: 2.5.0
-    dev: true
-
-  /@nestjs/testing/9.3.2_7a34jc7ugkzz7otoyin34qriiu:
-    resolution: {integrity: sha512-A1DleYwUpA/MX4XLTOJYEkhEjdI0HyujTmOUoPzSplAPWXbR48DTtY3Pu3A/qM7A8JwPzfB37glFUAJvFFOYpg==}
-    peerDependencies:
-      '@nestjs/common': ^9.0.0
-      '@nestjs/core': ^9.0.0
-      '@nestjs/microservices': ^9.0.0
-      '@nestjs/platform-express': ^9.0.0
-    peerDependenciesMeta:
-      '@nestjs/microservices':
-        optional: true
-      '@nestjs/platform-express':
-        optional: true
-    dependencies:
-      '@nestjs/common': 9.3.2_mnr6j2del53muneqly5h4y27ai
-      '@nestjs/core': 9.3.2_ycjbddrylidedcgziugeskgnam
+      '@nestjs/microservices': 9.3.2_zoh65q65572aobw6w23aqxzv5y
       '@nestjs/platform-express': 9.3.2_fnnujyxcjtinmcbby3pisnawpe
       tslib: 2.5.0
     dev: true
@@ -1292,7 +1289,7 @@ packages:
       typeorm: ^0.3.0
     dependencies:
       '@nestjs/common': 9.3.2_mnr6j2del53muneqly5h4y27ai
-      '@nestjs/core': 9.3.2_ycjbddrylidedcgziugeskgnam
+      '@nestjs/core': 9.3.2_pje24xt5w5655ydv24gaxlj3ku
       reflect-metadata: 0.1.13
       rxjs: 7.8.0
       typeorm: 0.3.11_pg@8.9.0+ts-node@10.9.1
