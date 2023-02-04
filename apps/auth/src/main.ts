@@ -9,7 +9,11 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       url: `0.0.0.0:${PORTS.AUTH_SERVER_PORT}`,
-      protoPath: join(__dirname, '../../../', 'libs/grpc/protos/auth.proto'),
+      protoPath: join(
+        __dirname,
+        '../../../../../../',
+        'libs/grpc/protos/auth.proto',
+      ),
       package: 'auth',
     },
   });

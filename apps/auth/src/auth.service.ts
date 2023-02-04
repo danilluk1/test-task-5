@@ -7,6 +7,8 @@ import User from './db/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserDto } from './models/dtos/user.dto';
+import Role from './models/role.enum';
+import { SimpleUser } from '@test-task-5/grpc/generated/auth/auth';
 
 @Injectable()
 export class AuthService {
@@ -128,6 +130,21 @@ export class AuthService {
   public async validate(
     accessToken: string,
   ): Promise<{ login: string; id: number }> {
+    console.log(accessToken);
+    if (!accessToken) {
+      throw new RpcException({
+        code: 7,
+        message: 'Unauthorized',
+      });
+    }
+
+    const payload = await this.jwtService.verifyAsync(accessToken, {
+      secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+    });
+    return { login: payload.login, id: payload.sub };
+  }
+
+  public async getRole(accessToken: string): Promise<Role> {
     if (!accessToken) {
       throw new RpcException({
         code: 7,
@@ -139,11 +156,23 @@ export class AuthService {
       secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
     });
 
-    return { login: payload.login, id: payload.sub };
+    const user = await this.dataSource.getRepository(User).findOneBy({
+      id: payload.sub,
+    });
+
+    return user.role;
+  }
+
+  public async getUsers(count: number, offset: number): Promise<SimpleUser[]> {
+    const users = await this.dataSource.getRepository(User).find({
+      skip: offset,
+      take: count,
+    });
+
+    return users;
   }
 
   private async getTokens(id: number, login: string) {
-    console.log(id);
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {

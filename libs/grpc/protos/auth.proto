@@ -7,7 +7,9 @@ service AuthService {
   rpc Validate(ValidateRequest) returns (ValidateResponse) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc Refresh(RefreshRequest) returns (RefreshResponse) {}
+  rpc GetRole(GetRoleRequest) returns (GetRoleResponse) {}
   rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+  rpc GetUsers(GetUsersRequest) returns (GetUsersResponse) {}
 }
 
 message User {
@@ -16,6 +18,29 @@ message User {
   string accessToken = 3;
   string refreshToken = 4;
   string role = 5;
+}
+
+message GetUsersRequest {
+  uint32 count = 1;
+  uint32 offset = 2;
+}
+
+message SimpleUser {
+  uint32 id = 1;
+  string login = 2;
+  string role = 3;
+}
+
+message GetUsersResponse {
+  repeated SimpleUser users = 1;
+}
+
+message GetRoleRequest {
+  string accessToken = 1;
+}
+
+message GetRoleResponse {
+  string role = 1;
 }
 
 message LogoutRequest {

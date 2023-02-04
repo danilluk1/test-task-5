@@ -10,12 +10,12 @@ export default class News {
   @Column()
   public text: string;
 
-  @Column()
+  @Column({ nullable: true })
   public authorId: number;
 
-  @Column()
+  @Column({ default: 0 })
   public likes: number;
 
-  @Column()
+  @Column({ default: 0 })
   public views: number;
 }

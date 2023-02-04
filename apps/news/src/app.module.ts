@@ -1,3 +1,4 @@
+import { AdminModule } from './admin/admin.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -21,7 +22,8 @@ import { NewsModule } from './news/news.module';
         synchronize: true,
       }),
     }),
-    NewsModule,
+    // NewsModule,
+    AdminModule,
   ],
   controllers: [],
   providers: [],

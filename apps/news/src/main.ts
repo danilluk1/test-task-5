@@ -5,18 +5,32 @@ import { Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice(AppModule, {
+  const app = await NestFactory.create(AppModule);
+  app.connectMicroservice({
     transport: Transport.GRPC,
     options: {
       url: `0.0.0.0:${PORTS.NEWS_SERVER_PORT}`,
       protoPath: join(
         __dirname,
-        '../../../../../',
+        '../../../../../../',
         'libs/grpc/protos/news.proto',
       ),
       package: 'news',
     },
   });
-  app.listen().then(() => console.log('News microservice is listening'));
+  app.connectMicroservice({
+    transport: Transport.GRPC,
+    options: {
+      url: `0.0.0.0:${PORTS.ADMIN_SERVER_PORT}`,
+      protoPath: join(
+        __dirname,
+        '../../../../../../',
+        'libs/grpc/protos/admin.proto',
+      ),
+      package: 'admin',
+    },
+  });
+  await app.startAllMicroservices();
+  console.log('News microservices started');
 }
 bootstrap();

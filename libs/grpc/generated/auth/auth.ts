@@ -12,6 +12,29 @@ export interface User {
   role: string;
 }
 
+export interface GetUsersRequest {
+  count: number;
+  offset: number;
+}
+
+export interface SimpleUser {
+  id: number;
+  login: string;
+  role: string;
+}
+
+export interface GetUsersResponse {
+  users: SimpleUser[];
+}
+
+export interface GetRoleRequest {
+  accessToken: string;
+}
+
+export interface GetRoleResponse {
+  role: string;
+}
+
 export interface LogoutRequest {
   refreshToken: string;
 }
@@ -139,6 +162,296 @@ export const User = {
     message.login = object.login ?? "";
     message.accessToken = object.accessToken ?? "";
     message.refreshToken = object.refreshToken ?? "";
+    message.role = object.role ?? "";
+    return message;
+  },
+};
+
+function createBaseGetUsersRequest(): GetUsersRequest {
+  return { count: 0, offset: 0 };
+}
+
+export const GetUsersRequest = {
+  encode(message: GetUsersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.count !== 0) {
+      writer.uint32(8).uint32(message.count);
+    }
+    if (message.offset !== 0) {
+      writer.uint32(16).uint32(message.offset);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUsersRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetUsersRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.count = reader.uint32();
+          break;
+        case 2:
+          message.offset = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetUsersRequest {
+    return {
+      count: isSet(object.count) ? Number(object.count) : 0,
+      offset: isSet(object.offset) ? Number(object.offset) : 0,
+    };
+  },
+
+  toJSON(message: GetUsersRequest): unknown {
+    const obj: any = {};
+    message.count !== undefined && (obj.count = Math.round(message.count));
+    message.offset !== undefined && (obj.offset = Math.round(message.offset));
+    return obj;
+  },
+
+  create(base?: DeepPartial<GetUsersRequest>): GetUsersRequest {
+    return GetUsersRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial(object: DeepPartial<GetUsersRequest>): GetUsersRequest {
+    const message = createBaseGetUsersRequest();
+    message.count = object.count ?? 0;
+    message.offset = object.offset ?? 0;
+    return message;
+  },
+};
+
+function createBaseSimpleUser(): SimpleUser {
+  return { id: 0, login: "", role: "" };
+}
+
+export const SimpleUser = {
+  encode(message: SimpleUser, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint32(message.id);
+    }
+    if (message.login !== "") {
+      writer.uint32(18).string(message.login);
+    }
+    if (message.role !== "") {
+      writer.uint32(26).string(message.role);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SimpleUser {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSimpleUser();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint32();
+          break;
+        case 2:
+          message.login = reader.string();
+          break;
+        case 3:
+          message.role = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SimpleUser {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      login: isSet(object.login) ? String(object.login) : "",
+      role: isSet(object.role) ? String(object.role) : "",
+    };
+  },
+
+  toJSON(message: SimpleUser): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.login !== undefined && (obj.login = message.login);
+    message.role !== undefined && (obj.role = message.role);
+    return obj;
+  },
+
+  create(base?: DeepPartial<SimpleUser>): SimpleUser {
+    return SimpleUser.fromPartial(base ?? {});
+  },
+
+  fromPartial(object: DeepPartial<SimpleUser>): SimpleUser {
+    const message = createBaseSimpleUser();
+    message.id = object.id ?? 0;
+    message.login = object.login ?? "";
+    message.role = object.role ?? "";
+    return message;
+  },
+};
+
+function createBaseGetUsersResponse(): GetUsersResponse {
+  return { users: [] };
+}
+
+export const GetUsersResponse = {
+  encode(message: GetUsersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.users) {
+      SimpleUser.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUsersResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetUsersResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.users.push(SimpleUser.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetUsersResponse {
+    return { users: Array.isArray(object?.users) ? object.users.map((e: any) => SimpleUser.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: GetUsersResponse): unknown {
+    const obj: any = {};
+    if (message.users) {
+      obj.users = message.users.map((e) => e ? SimpleUser.toJSON(e) : undefined);
+    } else {
+      obj.users = [];
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GetUsersResponse>): GetUsersResponse {
+    return GetUsersResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial(object: DeepPartial<GetUsersResponse>): GetUsersResponse {
+    const message = createBaseGetUsersResponse();
+    message.users = object.users?.map((e) => SimpleUser.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetRoleRequest(): GetRoleRequest {
+  return { accessToken: "" };
+}
+
+export const GetRoleRequest = {
+  encode(message: GetRoleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.accessToken !== "") {
+      writer.uint32(10).string(message.accessToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetRoleRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetRoleRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accessToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetRoleRequest {
+    return { accessToken: isSet(object.accessToken) ? String(object.accessToken) : "" };
+  },
+
+  toJSON(message: GetRoleRequest): unknown {
+    const obj: any = {};
+    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
+    return obj;
+  },
+
+  create(base?: DeepPartial<GetRoleRequest>): GetRoleRequest {
+    return GetRoleRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial(object: DeepPartial<GetRoleRequest>): GetRoleRequest {
+    const message = createBaseGetRoleRequest();
+    message.accessToken = object.accessToken ?? "";
+    return message;
+  },
+};
+
+function createBaseGetRoleResponse(): GetRoleResponse {
+  return { role: "" };
+}
+
+export const GetRoleResponse = {
+  encode(message: GetRoleResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.role !== "") {
+      writer.uint32(10).string(message.role);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetRoleResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetRoleResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.role = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetRoleResponse {
+    return { role: isSet(object.role) ? String(object.role) : "" };
+  },
+
+  toJSON(message: GetRoleResponse): unknown {
+    const obj: any = {};
+    message.role !== undefined && (obj.role = message.role);
+    return obj;
+  },
+
+  create(base?: DeepPartial<GetRoleResponse>): GetRoleResponse {
+    return GetRoleResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial(object: DeepPartial<GetRoleResponse>): GetRoleResponse {
+    const message = createBaseGetRoleResponse();
     message.role = object.role ?? "";
     return message;
   },
@@ -724,11 +1037,27 @@ export const AuthServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    getRole: {
+      name: "GetRole",
+      requestType: GetRoleRequest,
+      requestStream: false,
+      responseType: GetRoleResponse,
+      responseStream: false,
+      options: {},
+    },
     logout: {
       name: "Logout",
       requestType: LogoutRequest,
       requestStream: false,
       responseType: LogoutResponse,
+      responseStream: false,
+      options: {},
+    },
+    getUsers: {
+      name: "GetUsers",
+      requestType: GetUsersRequest,
+      requestStream: false,
+      responseType: GetUsersResponse,
       responseStream: false,
       options: {},
     },
@@ -740,7 +1069,9 @@ export interface AuthServiceImplementation<CallContextExt = {}> {
   validate(request: ValidateRequest, context: CallContext & CallContextExt): Promise<DeepPartial<ValidateResponse>>;
   login(request: LoginRequest, context: CallContext & CallContextExt): Promise<DeepPartial<LoginResponse>>;
   refresh(request: RefreshRequest, context: CallContext & CallContextExt): Promise<DeepPartial<RefreshResponse>>;
+  getRole(request: GetRoleRequest, context: CallContext & CallContextExt): Promise<DeepPartial<GetRoleResponse>>;
   logout(request: LogoutRequest, context: CallContext & CallContextExt): Promise<DeepPartial<LogoutResponse>>;
+  getUsers(request: GetUsersRequest, context: CallContext & CallContextExt): Promise<DeepPartial<GetUsersResponse>>;
 }
 
 export interface AuthServiceClient<CallOptionsExt = {}> {
@@ -748,7 +1079,9 @@ export interface AuthServiceClient<CallOptionsExt = {}> {
   validate(request: DeepPartial<ValidateRequest>, options?: CallOptions & CallOptionsExt): Promise<ValidateResponse>;
   login(request: DeepPartial<LoginRequest>, options?: CallOptions & CallOptionsExt): Promise<LoginResponse>;
   refresh(request: DeepPartial<RefreshRequest>, options?: CallOptions & CallOptionsExt): Promise<RefreshResponse>;
+  getRole(request: DeepPartial<GetRoleRequest>, options?: CallOptions & CallOptionsExt): Promise<GetRoleResponse>;
   logout(request: DeepPartial<LogoutRequest>, options?: CallOptions & CallOptionsExt): Promise<LogoutResponse>;
+  getUsers(request: DeepPartial<GetUsersRequest>, options?: CallOptions & CallOptionsExt): Promise<GetUsersResponse>;
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

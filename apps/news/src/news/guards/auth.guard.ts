@@ -1,3 +1,4 @@
+import { AuthController } from './../../../../auth/src/auth.controller';
 import { AuthService } from './../../../../auth/src/auth.service';
 import { Observable } from 'rxjs';
 import {
@@ -10,9 +11,9 @@ import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
 export class GrpcAuthGuard implements CanActivate {
-  private authService: AuthService;
-  constructor(@Inject('AUTH_PACKAGE') private client: ClientGrpc) {
-    this.authService = client.getService<AuthService>('AuthService');
+  private authService: AuthController;
+  constructor(@Inject('AUTH_PACKAGE1') private client: ClientGrpc) {
+    this.authService = client.getService<AuthController>('AuthService');
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -32,8 +33,11 @@ export class GrpcAuthGuard implements CanActivate {
     }
     const token = header.split(' ')[1];
     try {
-      const valid = await this.authService.validate(token);
-
+      console.log('!23');
+      const valid = await this.authService.validate({
+        accessToken: token,
+      });
+      // console.log(valid.id);
       if (!valid?.id || !valid.login) {
         return false;
       }

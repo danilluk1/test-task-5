@@ -1,7 +1,7 @@
 import { SetMetadata } from '@nestjs/common';
 
 //TODO: Move to shared lib, cus duplicate with auth models
-enum Role {
+export enum Role {
   User = 'User',
   Admin = 'Admin',
 }

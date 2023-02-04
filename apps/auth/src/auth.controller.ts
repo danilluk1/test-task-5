@@ -1,3 +1,7 @@
+import {
+  GetUsersRequest,
+  GetUsersResponse,
+} from './../../../libs/grpc/generated/auth/auth';
 import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
@@ -11,8 +15,11 @@ import {
   RefreshResponse,
   ValidateRequest,
   ValidateResponse,
+  GetRoleRequest,
+  GetRoleResponse,
 } from '@test-task-5/grpc/generated/auth/auth';
 import { AuthService } from './auth.service';
+
 @Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -49,5 +56,22 @@ export class AuthController {
   async validate(data: ValidateRequest): Promise<ValidateResponse> {
     const validateResponse = await this.authService.validate(data.accessToken);
     return validateResponse;
+  }
+
+  @GrpcMethod('AuthService', 'GetRole')
+  async getRole(data: GetRoleRequest): Promise<GetRoleResponse> {
+    const role = await this.authService.getRole(data.accessToken);
+    return {
+      role: role,
+    };
+  }
+
+  @GrpcMethod('AuthService', 'GetUsers')
+  async getUsers(data: GetUsersRequest): Promise<GetUsersResponse> {
+    const users = await this.authService.getUsers(data.count, data.offset);
+
+    return {
+      users: users,
+    };
   }
 }

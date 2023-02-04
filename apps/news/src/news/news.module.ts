@@ -7,13 +7,13 @@ import { join } from 'path';
   imports: [
     ClientsModule.register([
       {
-        name: 'AUTH_PACKAGE',
+        name: 'AUTH_PACKAGE1',
         transport: Transport.GRPC,
         options: {
           package: 'auth',
           protoPath: join(
             __dirname,
-            '../../../../../../',
+            '../../../../../../../',
             'libs/grpc/protos/auth.proto',
           ),
         },
