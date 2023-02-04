@@ -467,10 +467,10 @@ export const RefreshResponse = {
   },
 };
 
-export type AuthDefinition = typeof AuthDefinition;
-export const AuthDefinition = {
-  name: "Auth",
-  fullName: "auth.Auth",
+export type AuthServiceDefinition = typeof AuthServiceDefinition;
+export const AuthServiceDefinition = {
+  name: "AuthService",
+  fullName: "auth.AuthService",
   methods: {
     register: {
       name: "Register",
@@ -505,7 +505,7 @@ export interface AuthServiceImplementation<CallContextExt = {}> {
   refresh(request: RefreshRequest, context: CallContext & CallContextExt): Promise<DeepPartial<RefreshResponse>>;
 }
 
-export interface AuthClient<CallOptionsExt = {}> {
+export interface AuthServiceClient<CallOptionsExt = {}> {
   register(request: DeepPartial<RegisterRequest>, options?: CallOptions & CallOptionsExt): Promise<RegisterResponse>;
   login(request: DeepPartial<LoginRequest>, options?: CallOptions & CallOptionsExt): Promise<LoginResponse>;
   refresh(request: DeepPartial<RefreshRequest>, options?: CallOptions & CallOptionsExt): Promise<RefreshResponse>;
