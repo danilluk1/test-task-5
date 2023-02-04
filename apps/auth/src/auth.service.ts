@@ -125,7 +125,25 @@ export class AuthService {
     return tokens;
   }
 
+  public async validate(
+    accessToken: string,
+  ): Promise<{ login: string; id: number }> {
+    if (!accessToken) {
+      throw new RpcException({
+        code: 7,
+        message: 'Unauthorized',
+      });
+    }
+
+    const payload = await this.jwtService.verifyAsync(accessToken, {
+      secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+    });
+
+    return { login: payload.login, id: payload.sub };
+  }
+
   private async getTokens(id: number, login: string) {
+    console.log(id);
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {

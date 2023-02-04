@@ -1,6 +1,7 @@
+import { NewsService } from './news.service';
 import { NewsController } from './news.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { Module } from "@nestjs/common";
+import { Module } from '@nestjs/common';
 import { join } from 'path';
 @Module({
   imports: [
@@ -9,12 +10,17 @@ import { join } from 'path';
         name: 'AUTH_PACKAGE',
         transport: Transport.GRPC,
         options: {
-          package: "auth",
-          protoPath: join(__dirname, "../../../../libs", "grpc/protos/auth.proto")
-        }
-      }
-    ])
+          package: 'auth',
+          protoPath: join(
+            __dirname,
+            '../../../../../../',
+            'libs/grpc/protos/auth.proto',
+          ),
+        },
+      },
+    ]),
   ],
-  providers: [],
-  controllers: [NewsController]
+  providers: [NewsService],
+  controllers: [NewsController],
 })
+export class NewsModule {}

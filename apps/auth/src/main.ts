@@ -13,7 +13,6 @@ async function bootstrap() {
       package: 'auth',
     },
   });
-
   app.listen().then(() => console.log('Auth microservice is listening'));
 }
 bootstrap();

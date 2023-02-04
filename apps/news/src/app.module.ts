@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import News from './db/entities/news.entity';
+import { NewsModule } from './news/news.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import News from './db/entities/news.entity';
         synchronize: true,
       }),
     }),
+    NewsModule,
   ],
   controllers: [],
   providers: [],

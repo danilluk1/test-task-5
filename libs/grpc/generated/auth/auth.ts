@@ -19,6 +19,15 @@ export interface LogoutRequest {
 export interface LogoutResponse {
 }
 
+export interface ValidateRequest {
+  accessToken: string;
+}
+
+export interface ValidateResponse {
+  id: number;
+  login: string;
+}
+
 export interface RegisterRequest {
   login: string;
   password: string;
@@ -225,6 +234,116 @@ export const LogoutResponse = {
 
   fromPartial(_: DeepPartial<LogoutResponse>): LogoutResponse {
     const message = createBaseLogoutResponse();
+    return message;
+  },
+};
+
+function createBaseValidateRequest(): ValidateRequest {
+  return { accessToken: "" };
+}
+
+export const ValidateRequest = {
+  encode(message: ValidateRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.accessToken !== "") {
+      writer.uint32(10).string(message.accessToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ValidateRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseValidateRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accessToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ValidateRequest {
+    return { accessToken: isSet(object.accessToken) ? String(object.accessToken) : "" };
+  },
+
+  toJSON(message: ValidateRequest): unknown {
+    const obj: any = {};
+    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
+    return obj;
+  },
+
+  create(base?: DeepPartial<ValidateRequest>): ValidateRequest {
+    return ValidateRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial(object: DeepPartial<ValidateRequest>): ValidateRequest {
+    const message = createBaseValidateRequest();
+    message.accessToken = object.accessToken ?? "";
+    return message;
+  },
+};
+
+function createBaseValidateResponse(): ValidateResponse {
+  return { id: 0, login: "" };
+}
+
+export const ValidateResponse = {
+  encode(message: ValidateResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint32(message.id);
+    }
+    if (message.login !== "") {
+      writer.uint32(18).string(message.login);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ValidateResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseValidateResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint32();
+          break;
+        case 2:
+          message.login = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ValidateResponse {
+    return { id: isSet(object.id) ? Number(object.id) : 0, login: isSet(object.login) ? String(object.login) : "" };
+  },
+
+  toJSON(message: ValidateResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.login !== undefined && (obj.login = message.login);
+    return obj;
+  },
+
+  create(base?: DeepPartial<ValidateResponse>): ValidateResponse {
+    return ValidateResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial(object: DeepPartial<ValidateResponse>): ValidateResponse {
+    const message = createBaseValidateResponse();
+    message.id = object.id ?? 0;
+    message.login = object.login ?? "";
     return message;
   },
 };
@@ -581,6 +700,14 @@ export const AuthServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    validate: {
+      name: "Validate",
+      requestType: ValidateRequest,
+      requestStream: false,
+      responseType: ValidateResponse,
+      responseStream: false,
+      options: {},
+    },
     login: {
       name: "Login",
       requestType: LoginRequest,
@@ -610,6 +737,7 @@ export const AuthServiceDefinition = {
 
 export interface AuthServiceImplementation<CallContextExt = {}> {
   register(request: RegisterRequest, context: CallContext & CallContextExt): Promise<DeepPartial<RegisterResponse>>;
+  validate(request: ValidateRequest, context: CallContext & CallContextExt): Promise<DeepPartial<ValidateResponse>>;
   login(request: LoginRequest, context: CallContext & CallContextExt): Promise<DeepPartial<LoginResponse>>;
   refresh(request: RefreshRequest, context: CallContext & CallContextExt): Promise<DeepPartial<RefreshResponse>>;
   logout(request: LogoutRequest, context: CallContext & CallContextExt): Promise<DeepPartial<LogoutResponse>>;
@@ -617,6 +745,7 @@ export interface AuthServiceImplementation<CallContextExt = {}> {
 
 export interface AuthServiceClient<CallOptionsExt = {}> {
   register(request: DeepPartial<RegisterRequest>, options?: CallOptions & CallOptionsExt): Promise<RegisterResponse>;
+  validate(request: DeepPartial<ValidateRequest>, options?: CallOptions & CallOptionsExt): Promise<ValidateResponse>;
   login(request: DeepPartial<LoginRequest>, options?: CallOptions & CallOptionsExt): Promise<LoginResponse>;
   refresh(request: DeepPartial<RefreshRequest>, options?: CallOptions & CallOptionsExt): Promise<RefreshResponse>;
   logout(request: DeepPartial<LogoutRequest>, options?: CallOptions & CallOptionsExt): Promise<LogoutResponse>;

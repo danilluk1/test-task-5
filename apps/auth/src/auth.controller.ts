@@ -9,6 +9,8 @@ import {
   LogoutResponse,
   RefreshRequest,
   RefreshResponse,
+  ValidateRequest,
+  ValidateResponse,
 } from '@test-task-5/grpc/generated/auth/auth';
 import { AuthService } from './auth.service';
 @Controller()
@@ -37,9 +39,15 @@ export class AuthController {
     return;
   }
 
-  @GrpcMethod('AuthService', 'refresh')
+  @GrpcMethod('AuthService', 'Refresh')
   async refresh(data: RefreshRequest): Promise<RefreshResponse> {
     const tokens = await this.authService.refreshTokens(data.refreshToken);
     return tokens;
+  }
+
+  @GrpcMethod('AuthService', 'Validate')
+  async validate(data: ValidateRequest): Promise<ValidateResponse> {
+    const validateResponse = await this.authService.validate(data.accessToken);
+    return validateResponse;
   }
 }
