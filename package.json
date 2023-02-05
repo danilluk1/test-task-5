@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:libs": "turbo run build --filter=./libs/**"
+    "build:libs": "turbo run build --filter=./libs/**",
+    "dev": "turbo run dev --filter=./apps/*"
   },
   "workspaces": [
     "apps/**",
