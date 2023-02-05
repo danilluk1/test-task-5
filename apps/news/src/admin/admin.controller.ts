@@ -36,13 +36,6 @@ export class AdminController {
   @UseGuards(RolesAuthGuard)
   @GrpcMethod('AdminService', 'GetUsers')
   async getUsersRequest(data: GetUsersRequest): Promise<GetUsersResponse> {
-    if (!data.count || !data.offset) {
-      throw new RpcException({
-        code: 3,
-        message: 'Please, specify text',
-      });
-    }
-
     const users = await this.adminService.getUsers(data.count, data.offset);
     return {
       users: users,

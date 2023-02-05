@@ -108,12 +108,6 @@ export class AuthController {
 
   @GrpcMethod('AuthService', 'GetUsers')
   async getUsers(data: GetUsersRequest): Promise<GetUsersResponse> {
-    if (!data.count || !data.offset) {
-      throw new RpcException({
-        code: 3,
-        message: 'Please, specify count and offset',
-      });
-    }
     const users = await this.authService.getUsers(data.count, data.offset);
 
     return {

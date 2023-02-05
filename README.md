@@ -2,11 +2,18 @@
 
 Реализованы два сервиса, которые общаются между собой по gRPC, соответственно AuthService, содержащий в себе логику по авторизации через refresh/access токены. И сервис NewsService/AdminsService, которые представляют собой gRPC gateway, в тестовую систему, объединены в один, так как у них одна база данных. Также использованы две отдельные базы данных для сервисов
 
+Для отправки запросов к API gRPC необходимо добавить метаданные, где токен это accessToken из ответа логина или регистрации
+
+Или можно воспользоваться подготовленным мною [Воркспейсом постман](https://www.postman.com/spacecraft-geoscientist-12695557/workspace/test-task)
+
+Чтобы получить пользователя админа необходимо изменить роль пользователя в Adminer(адрес - localhost:8085)
+
+![image](.github/assets/metadata.png)
+
 ## Известные проблемы
 
 <ul>
-  <li>Ииногда в NestJS ломается RpcExceptionHandler и всегда возвращаются коды UNKNOWN</li>
-  <li></li>
+  <li>Иногда в NestJS ломается RpcExceptionHandler и всегда возвращаются коды UNKNOWN</li>
 </ul>
 
 ## AuthService
@@ -62,5 +69,13 @@ docker compose -f docker-compose.dev.yml up
 Запускаем проект
 
 ```
-pnpm run start:dev
+pnpm run dev
 ```
+
+После чего из постмана можно отправлять запросы к gRPC
+
+<ul>
+  <li>localhost:50051 - AuthService</li>
+  <li>localhost:50052 - NewsService</li>
+  <li>localhost:50053 - AdminService</li>
+</ul>
