@@ -7,8 +7,9 @@ services:
       - ./scripts:/docker-entrypoint-initdb.d
       - postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: "test"
-      POSTGRES_PASSWORD: "test"
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_MULTIPLE_DATABASES=test1,test2
     ports:
       - "5432:5432"
     healthcheck:
@@ -17,19 +18,19 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - test-task-4
+      - test-task-5
   adminer:
     image: adminer
     restart: always
     networks:
-      - test-task-4
+      - test-task-5
     ports:
       - "8085:8080"
     environment:
       - ADMINER_DEFAULT_SERVER=postgres:5432
       - ADMINER_PLUGINS=enum-types enum-option json-column
 networks:
-  test-task-4:
+  test-task-5:
     driver: bridge
 volumes:
   postgres-data:
